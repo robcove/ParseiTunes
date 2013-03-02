@@ -2,9 +2,9 @@
 # by Rob 
 #!/usr/bin/perl -w
 use strict;
-
+die "Usage: ParseiTunes.pl <path to iTunes XML file>\n" unless $ARGV[0];
 # Path to your iTunes Music Library XML file
-my $library = 'iTunes Music Library.xml';
+my $library = $ARGV[0];;
 
 # Insert any of the available (or unlisted) fields you would like to use (not implemented)
 my @fields = ( "Name", 
@@ -55,4 +55,4 @@ foreach my $song (@songs) {
   print "$song->{Artist} - $song->{Name} : $song->{Album} : $song->{Genre}\n";
 }
 
-print "$#songs Total Tracks\n";
+print $#songs + 1 . " Total Tracks\n";
