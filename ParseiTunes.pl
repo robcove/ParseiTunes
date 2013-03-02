@@ -49,7 +49,7 @@ for my $i (0 .. $#xml_songs) {
 @songs = grep { $_->{Genre} ne "Podcast" } @songs;
 @songs = grep { $_->{Genre} ne "Audiobook" } @songs;
 # Sort by Artist
-my @songs = sort { lc($a->{Artist}) cmp lc($b->{Artist}) } @songs;
+@songs = sort { lc($a->{Artist}) cmp lc($b->{Artist}) } @songs;
 
 foreach my $song (@songs) {
   print "$song->{Artist} - $song->{Name} : $song->{Album} : $song->{Genre}\n";
