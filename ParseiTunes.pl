@@ -1,10 +1,9 @@
-# Parse your iTunes Library XML file
+#Parse your iTunes Library XML file
 # by Rob 
 #!/usr/bin/perl -w
 use strict;
 die "Usage: ParseiTunes.pl <path to iTunes XML file>\n" unless $ARGV[0];
-# Path to your iTunes Music Library XML file
-my $library = $ARGV[0];;
+my $library = $ARGV[0];
 
 # Insert any of the available (or unlisted) fields you would like to use (not implemented)
 my @fields = ( "Name", 
@@ -34,8 +33,6 @@ else {
 	die "Your iTunes XML file is messed up.\n";
 }
 
-#print "$usable_xml\n"; # debug
-
 my @xml_songs = ($usable_xml =~ /<dict>(.*?)<\/dict>/sg) or die "Broken!\n"; # Another <dict> to traverse
 my @songs; # Array of hashes for each song
 for my $i (0 .. $#xml_songs) {
@@ -45,14 +42,22 @@ for my $i (0 .. $#xml_songs) {
 		$songs[$i]{$keys[$j]} = $values[$j]; # Populate the hash now, filter later?
 	}
 }
-# Filter out all the podcasts and audiobooks
+# Filter out all the podcasts, audiobooks and TV shows
 @songs = grep { $_->{Genre} ne "Podcast" } @songs;
 @songs = grep { $_->{Genre} ne "Audiobook" } @songs;
+@songs = grep { !exists $_->{Series} } @songs;
 # Sort by Artist
 @songs = sort { lc($a->{Artist}) cmp lc($b->{Artist}) } @songs;
 
 foreach my $song (@songs) {
   print "$song->{Artist} - $song->{Name} : $song->{Album} : $song->{Genre}\n";
 }
-
+# Create an array of all the keys
+# Not using the @keys above because it may contain podcasts/audiobooks which use different fields
+#my $song = $songs[0];
+#my @keys = sort { lc($a) cmp lc($b) } keys %$song;
+#foreach my $key (@keys) {
+#  print "$key\n";
+#}
+print "\n";
 print $#songs + 1 . " Total Tracks\n";
