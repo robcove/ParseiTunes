@@ -42,9 +42,11 @@ for my $i (0 .. $#xml_songs) {
 		$songs[$i]{$keys[$j]} = $values[$j]; # Populate the hash now, filter later?
 	}
 }
-# Filter out all the podcasts, audiobooks and TV shows
+# Filter all the podcasts, audiobooks and TV shows
 @songs = grep { $_->{Genre} ne "Podcast" } @songs;
 @songs = grep { $_->{Genre} ne "Audiobook" } @songs;
+
+my @shows = grep { exists $_->{Series} } @songs;
 @songs = grep { !exists $_->{Series} } @songs;
 # Sort by Artist
 @songs = sort { lc($a->{Artist}) cmp lc($b->{Artist}) } @songs;
